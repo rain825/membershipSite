@@ -26,9 +26,6 @@ type DB struct {
 }
 
 // Handler
-func helloHandler(c echo.Context) error {
-	return c.String(http.StatusOK, "Hello, World!")
-}
 
 func handlerIndex(c echo.Context) error {
 	sess, err := session.Get("session", c)
@@ -42,7 +39,8 @@ func handlerIndex(c echo.Context) error {
 		},
 	)
 	if err != nil {
-		c.String(http.StatusInternalServerError, err.Error())
+		log.Printf("pongo2 error:%v\n", err)
+		return c.String(http.StatusInternalServerError, err.Error())
 	}
 	return c.HTML(http.StatusOK, body)
 }
@@ -90,18 +88,22 @@ func handlerPostLogin(c echo.Context) error {
 
 	password := c.FormValue("password")
 	authResult := authentication(userID, password)
-	fmt.Println(authResult)
 
 	if authResult {
-		sess, _ := session.Get("session", c)
+		sess, err := session.Get("session", c)
+		if err != nil {
+			log.Printf("session get error:%v\n", err)
+		}
 		sess.Options = &sessions.Options{
 			Path:     "/",
 			MaxAge:   86400 * 7,
 			HttpOnly: true,
 		}
 		sess.Values["userID"] = userID
-		sess.Save(c.Request(), c.Response())
-		return c.String(http.StatusOK, "こんにちは")
+		if err := sess.Save(c.Request(), c.Response()); err != nil {
+			log.Printf("session save error:%v\n", err)
+		}
+		return c.Redirect(http.StatusFound, "/")
 	} else {
 		return c.String(http.StatusUnauthorized, "ログイン失敗")
 	}
@@ -109,6 +111,15 @@ func handlerPostLogin(c echo.Context) error {
 }
 
 func handlerLogout(c echo.Context) error {
+	sess, err := session.Get("session", c)
+	if err != nil {
+		log.Printf("session error:%v\n", err)
+	}
+	sess.Options = &sessions.Options{
+		MaxAge: -1,
+		Path:   "/",
+	}
+	sess.Save(c.Request(), c.Response())
 	return c.String(http.StatusOK, "Hello, World!")
 }
 
