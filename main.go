@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
+	"github.com/boj/redistore"
+	"github.com/gorilla/sessions"
+	"github.com/labstack/echo-contrib/session"
 	"net/http"
 
-	"github.com/boj/redistore"
 	"github.com/flosch/pongo2"
-	"github.com/gorilla/sessions"
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo"
-	"github.com/labstack/echo-contrib/session"
 	"golang.org/x/crypto/bcrypt"
 	"log"
 )
@@ -18,6 +18,7 @@ var (
 	db             DB
 	templateSignup = pongo2.Must(pongo2.FromFile("template/signup.html"))
 	templatelogin  = pongo2.Must(pongo2.FromFile("template/login.html"))
+	templateIndex  = pongo2.Must(pongo2.FromFile("template/index.html"))
 )
 
 type DB struct {
@@ -27,6 +28,23 @@ type DB struct {
 // Handler
 func helloHandler(c echo.Context) error {
 	return c.String(http.StatusOK, "Hello, World!")
+}
+
+func handlerIndex(c echo.Context) error {
+	sess, err := session.Get("session", c)
+	if err != nil {
+		log.Printf("session error:%v\n", err)
+	}
+
+	body, err := templateIndex.Execute(
+		pongo2.Context{
+			"userID": sess.Values["userID"],
+		},
+	)
+	if err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+	}
+	return c.HTML(http.StatusOK, body)
 }
 
 func handlerGetSingUp(c echo.Context) error {
@@ -75,11 +93,23 @@ func handlerPostLogin(c echo.Context) error {
 	fmt.Println(authResult)
 
 	if authResult {
+		sess, _ := session.Get("session", c)
+		sess.Options = &sessions.Options{
+			Path:     "/",
+			MaxAge:   86400 * 7,
+			HttpOnly: true,
+		}
+		sess.Values["userID"] = userID
+		sess.Save(c.Request(), c.Response())
 		return c.String(http.StatusOK, "こんにちは")
 	} else {
 		return c.String(http.StatusUnauthorized, "ログイン失敗")
 	}
 
+}
+
+func handlerLogout(c echo.Context) error {
+	return c.String(http.StatusOK, "Hello, World!")
 }
 
 func authentication(userID, password string) bool {
@@ -110,18 +140,23 @@ func main() {
 		return
 	}
 	db = DB{sqlxdb}
-	//ここで新規ユーザ登録
-	db.FetchUsers()
+
+	store, err := redistore.NewRediStore(10, "tcp", ":6379", "", []byte("secret-key"))
+	if err != nil {
+		panic(err)
+	}
+	defer store.Close()
 
 	// Echo instance
 	e := echo.New()
-
+	e.Use(session.Middleware(store))
 	// Routes
-	e.GET("/", helloHandler)
+	e.GET("/", handlerIndex)
 	e.GET("/signup", handlerGetSingUp)
 	e.POST("/signup", handlerPostSignUp)
 	e.GET("/login", handlerGetLogin)
 	e.POST("/login", handlerPostLogin)
+	e.DELETE("/logout", handlerLogout)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":1323"))

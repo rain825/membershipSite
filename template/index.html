@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>top</title>
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous"></script>
+    <script>
+        function logout() {
+            $.ajax({
+                async:true,
+                cache:false,
+                timeout:3000,
+                type:"DELETE",
+                url:"/logout",
+                error: function (req, st, err) {
+                    alert("エラー");
+                },
+                complete: function (req, st) {
+                    location.href="/";
+                }
+            });
+            return false
+        }
+    </script>
+</head>
+<body>
+こんにちは
+{% if userID != nil %}
+{{userID}}さん
+<button type="button" onclick="logout()">ログアウト</button>
+{% else %}
+ゲストさん
+{% endif %}
+</body>
+</html>
