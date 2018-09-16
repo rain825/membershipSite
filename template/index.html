@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>top</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css">
     <script
             src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
@@ -30,9 +31,9 @@
 こんにちは
 {% if userID != nil %}
 {{userID}}さん
-<button type="button" onclick="logout()">ログアウト</button>
+<button class="button is-primary" type="button" onclick="logout()">ログアウト</button>
 {% else %}
-ゲストさん<input type="button" onclick="location.href='/login'" value="ログイン">
+ゲストさん<input class="button is-primary" type="button" onclick="location.href='/login'" value="ログイン">
 {% endif %}
 </body>
 </html>
