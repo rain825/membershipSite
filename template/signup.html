@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>signup</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+          integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+</head>
+<body>
+<form action="/signup" method="post">
+    <div class="field">
+        <label class="label">userID</label>
+        <div class="control has-icons-left">
+            <input class="input" type="text" placeholder="userID" name="userID">
+            <span class="icon is-small is-left">
+                <i class="fas fa-user"></i>
+            </span>
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">userName</label>
+        <div class="control">
+            <input class="input" type="text" placeholder="userName" name="userName">
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">password</label>
+        <div class="control has-icons-left">
+            <input class="input" type="password" placeholder="Password" name="password">
+            <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+            </span>
+        </div>
+    </div>
+
+    <div class="control">
+        <input class="button is-primary" type="submit" value="submit">
+    </div>
+</form>
+</body>
+</html>
