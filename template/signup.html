@@ -8,35 +8,46 @@
           integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 <body>
-<form action="/signup" method="post">
-    <div class="field">
-        <label class="label">userID</label>
-        <div class="control has-icons-left">
-            <input class="input" type="text" placeholder="userID" name="userID">
-            <span class="icon is-small is-left">
+<section class="hero is-fullheight">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-4 is-offset-4">
+                <h1 class="title">Sign up</h1>
+                <div class="box">
+                    <form action="/signup" method="post">
+                        <div class="field">
+                            <label class="label">userID</label>
+                            <div class="control has-icons-left">
+                                <input class="input" type="text" placeholder="userID" name="userID">
+                                <span class="icon is-small is-left">
                 <i class="fas fa-user"></i>
             </span>
-        </div>
-    </div>
-    <div class="field">
-        <label class="label">userName</label>
-        <div class="control">
-            <input class="input" type="text" placeholder="userName" name="userName">
-        </div>
-    </div>
-    <div class="field">
-        <label class="label">password</label>
-        <div class="control has-icons-left">
-            <input class="input" type="password" placeholder="Password" name="password">
-            <span class="icon is-small is-left">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">userName</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="userName" name="userName">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">password</label>
+                            <div class="control has-icons-left">
+                                <input class="input" type="password" placeholder="Password" name="password">
+                                <span class="icon is-small is-left">
                 <i class="fas fa-lock"></i>
             </span>
+                            </div>
+                        </div>
+
+                        <div class="control">
+                            <input class="button is-primary is-fullwidth" type="submit" value="Sign UP!">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="control">
-        <input class="button is-primary" type="submit" value="submit">
-    </div>
-</form>
+</section>
 </body>
 </html>
