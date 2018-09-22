@@ -12,13 +12,18 @@
     <div class="hero-body">
         <div class="container">
             <div class="column is-4 is-offset-4">
+                {% if flash != nil%}
+                <div class="notification is-danger">
+                    {{flash}}
+                </div>
+                {% endif %}
                 <h1 class="title has-text-centered">Login</h1>
                 <div class="box">
                     <form action="/login" method="post">
                         <div class="field">
                             <label class="label">userID</label>
                             <div class="control has-icons-left">
-                                <input class="input" type="text" placeholder="userID" name="userID">
+                                <input class="input" type="text" placeholder="userID" name="userID" value="{{userID}}">
                                 <span class="icon is-small is-left">
                 <i class="fas fa-user"></i>
             </span>

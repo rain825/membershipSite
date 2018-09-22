@@ -105,7 +105,16 @@ func handlerPostLogin(c echo.Context) error {
 		}
 		return c.Redirect(http.StatusFound, "/")
 	} else {
-		return c.String(http.StatusUnauthorized, "ログイン失敗")
+		body, err := templatelogin.Execute(
+			pongo2.Context{
+				"flash":  "ログイン失敗",
+				"userID": userID,
+			},
+		)
+		if err != nil {
+			c.String(http.StatusInternalServerError, err.Error())
+		}
+		return c.HTML(http.StatusUnauthorized, body)
 	}
 
 }
