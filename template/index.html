@@ -28,12 +28,20 @@
     </script>
 </head>
 <body>
+<header class="navbar is-primary">
+    <div class="navbar-brand">
+                {% if userID != nil %}
+                <a href="#" onclick="logout()">ログアウト</a>
+                {% else %}
+                <a href="#" onclick="location.href='/login'">ログイン</a>
+                {% endif %}
+    </div>
+</header>
 こんにちは
 {% if userID != nil %}
 {{userID}}さん
-<button class="button is-primary" type="button" onclick="logout()">ログアウト</button>
 {% else %}
-ゲストさん<input class="button is-primary" type="button" onclick="location.href='/login'" value="ログイン">
+ゲストさん
 {% endif %}
 </body>
 </html>
