@@ -3,3 +3,6 @@
 
 #macOS
 .DS_Store
+
+#管理外
+vendor/

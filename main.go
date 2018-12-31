@@ -153,7 +153,7 @@ func main() {
 		"local_password",
 		"localhost",
 		"3306",
-		"user",
+		"site",
 	))
 	if err != nil {
 		log.Fatalf("DB Connection Error: %v", err)
